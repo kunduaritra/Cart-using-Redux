@@ -2,8 +2,8 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = { isCartVisible: false };
 
-const cartSlice = createSlice({
-  name: "cart",
+const viewCartSlice = createSlice({
+  name: "viewcart",
   initialState,
   reducers: {
     toggleCart(state) {
@@ -12,6 +12,6 @@ const cartSlice = createSlice({
   },
 });
 
-export const cartActions = cartSlice.actions;
+export const viewcartActions = viewCartSlice.actions;
 
-export default cartSlice.reducer;
+export default viewCartSlice.reducer;
