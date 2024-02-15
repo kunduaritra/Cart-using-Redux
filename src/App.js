@@ -4,7 +4,8 @@ import Layout from "./components/Layout/Layout";
 import Products from "./components/Shop/Products";
 import { Fragment, useEffect } from "react";
 import Notification from "./components/UI/Notification";
-import { viewcartActions } from "./components/store/viewCartRedux";
+import { sendCartData } from "./components/store/cartSlice";
+import { fetchCartData } from "./components/store/cartSlice";
 
 let isInitial = true;
 
@@ -17,48 +18,12 @@ function App() {
   );
 
   useEffect(() => {
-    const sendDataToServer = async () => {
-      dispatch(
-        viewcartActions.showNotification({
-          status: "pending",
-          title: "Sending...",
-          message: "Sending Cart Data!",
-        })
-      );
-      const res = await fetch(
-        "https://cart-redux-e9fc6-default-rtdb.firebaseio.com/cart.json",
-        {
-          method: "PUT",
-          body: JSON.stringify({ cart }),
-        }
-      );
-      if (!res.ok) {
-        throw new Error("Sending Data Failed!");
-      }
-
-      dispatch(
-        viewcartActions.showNotification({
-          status: "success",
-          title: "Success!",
-          message: "Send Cart Data Successfully!",
-        })
-      );
-    };
-
     if (isInitial) {
       isInitial = false;
+      dispatch(fetchCartData());
       return;
     }
-
-    sendDataToServer().catch((err) => {
-      dispatch(
-        viewcartActions.showNotification({
-          status: "error",
-          title: "Error",
-          message: "Sending Cart Data Failed!",
-        })
-      );
-    });
+    dispatch(sendCartData(cart));
   }, [cart, dispatch]);
 
   return (
